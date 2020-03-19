@@ -11,7 +11,8 @@
 #include <stdio.h>
 #include <string.h>
 #include "UART_debug_v2.h" //debug
-
+#include "TypeCaster.h"
+#include "StepperDriverTimer1.h"
 
 //Global variables
 unsigned int timer0cnt=0;
@@ -23,10 +24,7 @@ void ledOn();
 void ledOff();
 void getAction(char command[], char payload[]);
 
-//DriverController
-void initTimer0();
-void startTimer();
-void stopTimer();
+
 
 
 
@@ -34,8 +32,7 @@ int main(void)
 {
     //Initialize
 	initUART();
-	//initLED();
-	//initTimer0();
+	initStepperT1();
 	sei();
 	
 	
@@ -49,12 +46,21 @@ int main(void)
 			
 			if (strcmp(command, "vel")==0)
 			{
-				sendMsg("VEL");	
+				unsigned int val=stringToUInt(payload);
+				setVelocityT1(val);
+				sendUInt(val);
 			}
 			else if (strcmp(command, "start")==0)
 			{
-				sendMsg("START");
-			}else{
+				startT1();
+				sendMsg("started");
+			}
+			else if (strcmp(command, "stop")==0)
+			{
+				stopAndClearT1();
+				sendMsg("stopped");
+			}
+			else{
 				sendMsg("ERROR");
 			}
 			
@@ -70,6 +76,7 @@ void getAction(char command[], char payload[]){
 }
 
 
+/*
 void initTimer0(){
 	TCCR0A |= (1<<COM0B0)|(1<<WGM01); //Toggle on compare + CTC mode
 	OCR0A=150;
@@ -89,7 +96,7 @@ void stopTimer(){
 	TCCR0B &= ~0x07; // set CS2, CS1, CS0 low
 	PORTG &= ~(1<<PG5);
 	timer0cnt=0;
-}
+}*/
 
 
 void initLED(){
@@ -107,9 +114,10 @@ void ledOff(){
 	
 }
 
+/*
 ISR(TIMER0_COMPA_vect){
 	timer0cnt++;
 	if(timer0cnt>=timer0Steps){
 		stopTimer();
 	}
-}
+}*/

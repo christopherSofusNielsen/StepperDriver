@@ -125,6 +125,12 @@
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="StepperDriverTimer1.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="StepperDriverTimer1.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="TypeCaster.c">
       <SubType>compile</SubType>
     </Compile>
