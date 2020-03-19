@@ -133,15 +133,15 @@ void getMsg(char msg[]){
 			{
 				rxReadPos = 0;
 			}
-		} 
-	}
-	
-	//if second endbyte is used, then move rxReadPos one forward
-	if(USESECONDEDNBYTE){
+		}
 		rxReadPos++;
-		if(rxReadPos >= RX_BUFFER_SIZE)
-		{
-			rxReadPos = 0;
+		//if second endbyte is used, then move rxReadPos one forward
+		if(USESECONDEDNBYTE){
+			rxReadPos++;
+			if(rxReadPos >= RX_BUFFER_SIZE)
+			{
+				rxReadPos = 0;
+			}
 		}
 	}
 }
