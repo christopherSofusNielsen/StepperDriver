@@ -5,11 +5,15 @@
  *  Author: teamv
  */ 
 
+#include "UART_debug_v2.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <string.h>
 #include <stdio.h>
-#include "UART_debug_v2.h"
+#include <ctype.h>
+#include <avr/io.h>
+#include <stdint.h>
+#include <stdlib.h>
 
 
 
@@ -116,15 +120,7 @@ void getMsg(char msg[]){
 	if(newMessage>0){
 		newMessage--;
 		uint8_t i=0;
-		/*do
-		{
-			msg[i]=rxBuffer[rxReadPos++];
-			
-			if(rxReadPos >= RX_BUFFER_SIZE)
-			{
-				rxReadPos = 0;
-			}
-		} while (msg[i++]!=FIRSTENDBYTE);*/
+		
 		
 		while (rxBuffer[rxReadPos]!=FIRSTENDBYTE){
 			msg[i++]=rxBuffer[rxReadPos++];
@@ -151,6 +147,30 @@ uint8_t newMsgAv(){
 		return 1;
 	else
 		return 0;
+}
+
+
+void parseMsg(char msg[], char command[], char payload[]){
+	
+	uint8_t cnt=0;
+	uint8_t cntCom=0;
+	uint8_t cntPay=0;
+	char c=msg[cnt];
+	
+	//first put each char from msg to command[] until the char is = or '\r'
+	while(c!='=' && c!=FIRSTENDBYTE && c!='\0'){
+		if(c!='\b') //if char is '\b' then don't put in command
+			command[cntCom++]=tolower(c);//convert each char to lower case
+		c=msg[++cnt];
+	}
+	
+	c=msg[++cnt];//if c is not '\r' or end of string char '\0' then put it in payload
+	while(c!=FIRSTENDBYTE && c!='\0'){
+		if(c!='\b')
+			payload[cntPay++]=c;
+		c=msg[++cnt];
+	}
+	
 }
 
 

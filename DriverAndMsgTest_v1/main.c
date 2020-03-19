@@ -8,7 +8,10 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+#include <stdio.h>
+#include <string.h>
 #include "UART_debug_v2.h" //debug
+
 
 //Global variables
 unsigned int timer0cnt=0;
@@ -18,6 +21,7 @@ unsigned int timer0Steps=400;
 void initLED();
 void ledOn();
 void ledOff();
+void getAction(char command[], char payload[]);
 
 //DriverController
 void initTimer0();
@@ -30,8 +34,8 @@ int main(void)
 {
     //Initialize
 	initUART();
-	initLED();
-	initTimer0();
+	//initLED();
+	//initTimer0();
 	sei();
 	
 	
@@ -39,23 +43,30 @@ int main(void)
     {
 		if (newMsgAv())
 		{
-			char msg[50]={'\0'};
-			getMsg(msg);
+			char command[20]={'\0'};
+			char payload[30]={'\0'};
+			getAction(command, payload);	
 			
-			if((char)msg[0]==(char)'1'){
-				ledOn();
-				startTimer();
-			}else if ((char)msg[0]==(char)'0')
+			if (strcmp(command, "vel")==0)
 			{
-				ledOff();
-				stopTimer();
-			}else{
-				//sendMsg("Error");
-				sendMsg(msg);
+				sendMsg("VEL");	
 			}
+			else if (strcmp(command, "start")==0)
+			{
+				sendMsg("START");
+			}else{
+				sendMsg("ERROR");
+			}
+			
 			
 		}
     }
+}
+
+void getAction(char command[], char payload[]){
+	char msg[50]={'\0'};
+	getMsg(msg);
+	parseMsg(msg, command, payload);
 }
 
 

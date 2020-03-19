@@ -33,6 +33,7 @@ void sendChar(char x);
 void sendUInt(unsigned int x);
 void sendUINT8(uint8_t byte);
 void sendUIntAndMsg(char msg[], unsigned int val);
+void parseMsg(char msg[], char command[], char payload[]);
 
 
 
