@@ -1,0 +1,16 @@
+//Full step
+MS1=LOW
+MS2=LOW
+
+//Current sense 9 o'clock
+MaxCurrent=310 mA
+
+
+/******************************
+Code
+******************************/
+
+//Vectors
+http://ee-classes.usc.edu/ee459/library/documents/avr_intr_vectors/
+
+Timer in CTC mode

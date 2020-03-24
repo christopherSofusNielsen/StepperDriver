@@ -18,6 +18,8 @@
 unsigned int timer0cnt=0;
 unsigned int timer0Steps=400;
 
+//uint8_t running;
+
 //Functions
 void initLED();
 void ledOn();
@@ -52,8 +54,13 @@ int main(void)
 			}
 			else if (strcmp(command, "start")==0)
 			{
-				startT1();
+				unsigned int steps=stringToUInt(payload);
+				
+				sendUInt((unsigned int)running);
+				startT1(steps);
 				sendMsg("started");
+				sendUInt((unsigned int)running);
+				
 			}
 			else if (strcmp(command, "stop")==0)
 			{
