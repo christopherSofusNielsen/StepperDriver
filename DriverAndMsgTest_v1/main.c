@@ -67,6 +67,23 @@ int main(void)
 				stopAndClearT1();
 				sendMsg("stopped");
 			}
+			else if (strcmp(command, "dir")==0)
+			{
+				uint8_t dir=stringToUInt(payload);
+				setDirectionT1(dir);
+				sendMsg("Dir is ");
+				sendUInt((uint8_t) dir);
+			}
+			else if (strcmp(command, "enable")==0)
+			{
+				enableT1();
+				sendMsg("enabled");
+			}
+			else if (strcmp(command, "disable")==0)
+			{
+				disableT1();
+				sendMsg("disabled");
+			}
 			else{
 				sendMsg("ERROR");
 			}

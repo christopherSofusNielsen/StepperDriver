@@ -13,12 +13,13 @@
 #include <avr/interrupt.h>
 
 
-
 extern void initStepperT1();
 extern void setVelocityT1(unsigned int vel);
-extern void setPrescaleT1(uint8_t scale);
 extern void startT1(long int steps);
 extern void stopAndClearT1();
+extern void setDirectionT1(uint8_t dir);
+extern void enableT1();
+extern void disableT1();
 
 extern uint8_t running;
 
